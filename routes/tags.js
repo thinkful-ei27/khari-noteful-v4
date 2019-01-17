@@ -5,10 +5,7 @@ const mongoose = require('mongoose');
 
 const Tag = require('../models/tag');
 const Note = require('../models/note');
-const passport = require('passport');
 
-// Protect endpoints using JWT Strategy
-router.use('/', passport.authenticate('jwt', { session: false, failWithError: true }));
 
 const router = express.Router();
 
@@ -115,6 +112,7 @@ router.put('/:id', (req, res, next) => {
 /* ========== DELETE/REMOVE A SINGLE ITEM ========== */
 router.delete('/:id', (req, res, next) => {
   const { id } = req.params;
+  const tagRemovePromise = Tag.findByIdAndRemove(id);
 
   /***** Never trust users - validate input *****/
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -123,7 +121,7 @@ router.delete('/:id', (req, res, next) => {
     return next(err);
   }
 
-  const tagRemovePromise = Tag.findByIdAndRemove(id);
+  
 
   const noteUpdatePromise = Note.updateMany(
     { tags: id },

@@ -3,12 +3,27 @@
 const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema({
-  title: { type: String, required: true },
-  content: String,
+  title: { type: String, index: true },
+  content: { type: String, index: true },
+  created: { type: Date, default: Date.now },
   folderId: { type: mongoose.Schema.Types.ObjectId, ref: 'Folder' },
-  tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }]
+  tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
+  userId: { type: mongoose.Schema.ObjectId, ref: 'User', required: false }
 });
 
+schema.index({name:1, userId: 1}, {unique: true});
+
+schema.set('toObject',{
+  transform: function(doc, ret){
+    ret.id = ret._id;
+    delete ret._id;
+    delete ret._v;
+  }
+});
+
+
+
+/*
 // Add `createdAt` and `updatedAt` fields
 schema.set('timestamps', true);
 
@@ -20,5 +35,6 @@ schema.set('toJSON', {
     delete result.__v;
   }
 });
+*/
 
 module.exports = mongoose.model('Note', schema);

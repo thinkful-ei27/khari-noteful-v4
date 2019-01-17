@@ -4,9 +4,9 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const passport = require('passport');
+
 const localStrategy = require('./passport/local');
 const jwtStrategy = require('./passport/jwt');
-
 const { PORT, MONGODB_URI } = require('./config');
 
 const notesRouter = require('./routes/notes');
@@ -17,6 +17,7 @@ const authRouter = require('./routes/auth');
 
 //Passport to use the local strategy
 passport.use(jwtStrategy);
+passport.use(localStrategy);
 
 // Create an Express application
 const app = express();
@@ -32,10 +33,13 @@ app.use(express.static('public'));
 // Parse request body
 app.use(express.json());
 
+// Protect endpoints using JWT Strategy
+const jwtAuth = passport.authenticate('jwt', { session: false, failWithError: true });
+
 // Mount routers
-app.use('/api/notes', notesRouter);
-app.use('/api/folders', foldersRouter);
-app.use('/api/tags', tagsRouter);
+app.use('/api/notes', jwtAuth, notesRouter);
+app.use('/api/folders', jwtAuth, foldersRouter);
+app.use('/api/tags', jwtAuth, tagsRouter);
 
 app.use('/api/users', userRouter);
 app.use('/api', authRouter);

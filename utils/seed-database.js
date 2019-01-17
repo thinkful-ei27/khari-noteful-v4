@@ -7,8 +7,9 @@ const { MONGODB_URI } = require('../config');
 const Note = require('../models/note');
 const Folder = require('../models/folder');
 const Tag = require('../models/tag');
+const User = require('../models/user');
 
-const { folders, notes, tags } = require('../db/data');
+const { folders, notes, tags, users } = require('../db/data');
 
 console.log(`Connecting to mongodb at ${MONGODB_URI}`);
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useCreateIndex : true })
@@ -24,8 +25,10 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useCreateIndex : true })
     console.info('Seeding Database...');
     return Promise.all([
       Note.insertMany(notes),
+      Note.createIndexes(),
       Folder.insertMany(folders),
-      Tag.insertMany(tags)
+      Tag.insertMany(tags),
+      User.insertMany(users)
     ]);
   })
   .then(results => {
@@ -37,3 +40,15 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useCreateIndex : true })
     console.error(err);
     return mongoose.disconnect();
   });
+
+Note.on('index', ()=>{
+  console.info('notes index is done building');
+});
+
+Folder.on('index', ()=>{
+  console.info('folder index is done building');
+});
+
+Tag.on('index',()=>{
+  console.info('tag index is done building');
+});

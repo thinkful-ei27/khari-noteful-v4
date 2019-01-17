@@ -11,7 +11,8 @@ const notes = [
     'title': "What the government doesn't want you to know about cats",
     'content': 'Posuere sollicitudin aliquam ultrices sagittis orci a. Feugiat sed lectus vestibulum mattis ullamcorper velit. Odio pellentesque diam volutpat commodo sed egestas egestas fringilla. Velit egestas dui id ornare arcu odio. Molestie at elementum eu facilisis sed odio morbi. Tempor nec feugiat nisl pretium. At tempor commodo ullamcorper a lacus. Egestas dui id ornare arcu odio. Id cursus metus aliquam eleifend. Vitae sapien pellentesque habitant morbi tristique. Dis parturient montes nascetur ridiculus. Egestas egestas fringilla phasellus faucibus scelerisque eleifend. Aliquam faucibus purus in massa tempor nec feugiat nisl.',
     'folderId': '111111111111111111111100',
-    'tags': ['222222222222222222222200']
+    'tags': ['222222222222222222222200'],
+    'userId': "333333333333333333333303"
   },
   {
     '_id': '000000000000000000000002',
@@ -52,6 +53,14 @@ const notes = [
     'title': '10 ways marketers are making you addicted to cats',
     'content': 'Posuere sollicitudin aliquam ultrices sagittis orci a. Feugiat sed lectus vestibulum mattis ullamcorper velit. Odio pellentesque diam volutpat commodo sed egestas egestas fringilla. Velit egestas dui id ornare arcu odio. Molestie at elementum eu facilisis sed odio morbi. Tempor nec feugiat nisl pretium. At tempor commodo ullamcorper a lacus. Egestas dui id ornare arcu odio. Id cursus metus aliquam eleifend. Vitae sapien pellentesque habitant morbi tristique. Dis parturient montes nascetur ridiculus. Egestas egestas fringilla phasellus faucibus scelerisque eleifend. Aliquam faucibus purus in massa tempor nec feugiat nisl.',
     'folderId': '111111111111111111111103'
+  },
+  {
+    '_id': '000000000000000000000008',
+    'title': 'Bracket Racket',
+    'content': 'Will be the new wave. Odio pellentesque diam volutpat commodo sed egestas egestas fringilla. Velit egestas dui id ornare arcu odio. Molestie at elementum eu facilisis sed odio morbi. Tempor nec feugiat nisl pretium. At tempor commodo ullamcorper a lacus. Egestas dui id ornare arcu odio. Id cursus metus aliquam eleifend. Vitae sapien pellentesque habitant morbi tristique. Dis parturient montes nascetur ridiculus. Egestas egestas fringilla phasellus faucibus scelerisque eleifend. Aliquam faucibus purus in massa tempor nec feugiat nisl.',
+    'folderId': '111111111111111111111100',
+    'tags': ['222222222222222222222200'],
+    'userId': "333333333333333333333303"
   }
 ];
 
@@ -93,4 +102,20 @@ const tags = [
   }
 ];
 
-module.exports = { folders, notes, tags };
+const users = [
+  {
+    "_id": "333333333333333333333303",
+    "fullname": "Khari Riviears",
+    "username": "kriviear",
+    "password": "thinkful"
+  },
+  {
+    "_id": "333333333333333333333300",
+    "fullname": "Bob User",
+    "username": "bobuser",
+    // hash digest for the string 'password'
+    "password": "baseball"
+  }
+];
+
+module.exports = { folders, notes, tags, users };
