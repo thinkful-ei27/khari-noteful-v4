@@ -15,12 +15,12 @@ const tagsRouter = require('./routes/tags');
 const userRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 
+// Create an Express application
+const app = express();
+
 //Passport to use the local strategy
 passport.use(jwtStrategy);
 passport.use(localStrategy);
-
-// Create an Express application
-const app = express();
 
 // Log all requests. Skip logging during
 app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'common', {

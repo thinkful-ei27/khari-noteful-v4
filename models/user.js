@@ -27,13 +27,6 @@ userSchema.set('toJSON', {
   }
 });
 
-userSchema.methods.serialize = function(){
-  return{
-    id: this._id,
-    username: this.username,
-    fullname: this.fullname
-  };
-};
 
 userSchema.methods.validatePassword = function(incomingPassword){
   return bcrypt.compare(incomingPassword, this.password);

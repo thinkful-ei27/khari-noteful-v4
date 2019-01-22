@@ -1,7 +1,6 @@
 'use strict';
 
 const express = require('express');
-const mongoose = require('mongoose');
 
 const User = require('../models/user');
 
@@ -9,7 +8,7 @@ const router = express.Router();
 
 
 router.post('/', async (req,res,next) =>{
-  const { fullname, username, password} =  req.body;
+  const { fullname, username, password } =  req.body;
 
   /*****************Validation**********************/
   const requiredFields = ['username', 'password'];
@@ -21,15 +20,21 @@ router.post('/', async (req,res,next) =>{
     return next(err);
   }
 
-  const stringFields = [username, password];
-  stringFields.forEach(field =>{
-    if(typeof field !== 'string'){
-      const err = new Error(`${field} must be a string`);
-      err.status = 422;
-    }
-  });
+  const stringFields = ['username', 'password', 'fullname'];
+  const nonStringFields = stringFields.find( 
+    field => field in req.body && typeof req.body[field] !== 'string'
+  );
+  if (nonStringFields){
+    return res.status(422).json({
+      code: 422,
+      reason: 'ValidationError',
+      message: 'Incorrect field type: expected string',
+      location: nonStringFields
+    });
+  }
 
-  stringFields.forEach(field=>{
+  const trimmedFields = ['username', 'password'];
+  trimmedFields.forEach(field=>{
     if(field !== field.trim()){
       const err = new Error(`${field} must not have whitepace at beginning or end`);
       err.status = 422;
@@ -52,13 +57,13 @@ router.post('/', async (req,res,next) =>{
     .then(digest => {
       const newUser = {
         username,
-        password: digest,
-        fullname
+        password: digest
       };
+      if(fullname){ newUser.fullname = fullname.trim(); }
       return User.create(newUser);
     })
     .then(result => {
-      return res.status(201).location(`http://${req.headers.host}/api/users/${result.id}`).json(result);
+      res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
     })
     .catch(err => {
       if (err.code === 11000) {
@@ -68,4 +73,5 @@ router.post('/', async (req,res,next) =>{
       next(err);
     });
 });
+
 module.exports = router;

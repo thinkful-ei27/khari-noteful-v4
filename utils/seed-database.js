@@ -19,13 +19,13 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useCreateIndex : true })
       Note.deleteMany(),
       Folder.deleteMany(),
       Tag.deleteMany(),
+      User.deleteMany()
     ]);
   })
   .then(() => {
     console.info('Seeding Database...');
     return Promise.all([
       Note.insertMany(notes),
-      Note.createIndexes(),
       Folder.insertMany(folders),
       Tag.insertMany(tags),
       User.insertMany(users)
@@ -40,15 +40,3 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useCreateIndex : true })
     console.error(err);
     return mongoose.disconnect();
   });
-
-Note.on('index', ()=>{
-  console.info('notes index is done building');
-});
-
-Folder.on('index', ()=>{
-  console.info('folder index is done building');
-});
-
-Tag.on('index',()=>{
-  console.info('tag index is done building');
-});
